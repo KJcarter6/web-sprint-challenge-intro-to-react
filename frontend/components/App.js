@@ -7,29 +7,27 @@ const urlPlanets = 'http://localhost:9009/api/planets'
 const urlPeople = 'http://localhost:9009/api/people'
 
 function App() {
-  // ❗ Create state to hold the data from the API
-const [planet, setPlanet] = useState("")
-const [characters, setCharacters] = useState("")
+  const [characters, setCharacters] = useState([]);
+  const [planets, setPlanets] = useState([]);
 
-  // ❗ Create effects to fetch the data and put it in state
   useEffect(() => {
+    
     axios.get(urlPeople)
-    .then(res =>{
-      setCharacters(res.data);
-    })
-    .catch(err => {
-      console.log('no characters found')
-    });
-  });
+      .then(response => {
+        setCharacters(response.data);
+      })
+      .catch(error => {
+        console.log('Error fetching characters:', error);
+      });
 
-  axios.get(urlPlanets)
-  .then(response => {
-    setPlanets(response.data);
-  })
-  .catch(error => {
-    console.log('Error fetching planets:', error);
-  });
-;
+    axios.get(urlPlanets)
+      .then(response => {
+        setPlanets(response.data);
+      })
+      .catch(error => {
+        console.log('Error fetching planets:', error);
+      });
+  }, []);
 
   return (
     <div>
@@ -41,10 +39,9 @@ const [characters, setCharacters] = useState("")
           <Character key={character.id} character={character} planet={characterPlanet} />
         );
       })}
-      {/* ❗ Map over the data in state, rendering a Character at each iteration */}
     </div>
-  )
-
+  );
+}
 
 export default App
 
