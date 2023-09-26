@@ -7,40 +7,40 @@ const urlPlanets = 'http://localhost:9009/api/planets'
 const urlPeople = 'http://localhost:9009/api/people'
 
 function App() {
-  const [characters, setCharacters] = useState([]);
-  const [planets, setPlanets] = useState([]);
+  const [planets, setPlanets ] = useState ([])
+  const [ people, setPeople] = useState ([])
+  // ❗ Create state to hold the data from the API
+  // ❗ Create effects to fetch the data and put it in state
 
-  useEffect(() => {
-    
-    axios.get(urlPeople)
-      .then(response => {
-        setCharacters(response.data);
-      })
-      .catch(error => {
-        console.log('Error fetching characters:', error);
-      });
-
+  useEffect (() => {
     axios.get(urlPlanets)
-      .then(response => {
-        setPlanets(response.data);
-      })
-      .catch(error => {
-        console.log('Error fetching planets:', error);
-      });
+    .then((response) => {
+      console.log(response.data,"planets")
+      setPlanets(response.data);
+    })
+    .catch((error)=> {
+      console.error('Error fetching planets:', error);
+    });
+    axios.get(urlPeople)
+    .then((response) => {
+      console.log(response.data,"people")
+      setPeople(response.data);
+    })
+    .catch((error) => {
+      console.error('Error fetching people', error)
+    });
   }, []);
-
   return (
     <div>
       <h2>Star Wars Characters</h2>
-      {characters.map(character => {
-        const characterPlanet = planets.find(planet => planet.id === character.homeworld);
-
-        return (
-          <Character key={character.id} character={character} planet={characterPlanet} />
-        );
-      })}
+      <p>See the README of the project for instructions on completing this challenge</p>
+      {/* ❗ Map over the data in state, rendering a Character at each iteration */}
+      {people.map((person) => (
+        <Character key={person.id} person={person} homeworlds={planets} />
+      ))}
+      
     </div>
-  );
+  )
 }
 
 export default App
